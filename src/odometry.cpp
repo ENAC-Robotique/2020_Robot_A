@@ -87,13 +87,3 @@ namespace Odometry{
 		omega = angle / CONTROL_PERIOD;
 	}
 }
-
-
-
-
-
-
-
-
-
-}

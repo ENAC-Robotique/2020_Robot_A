@@ -3,12 +3,8 @@
 #define UTILS_H_
 #include "Arduino.h"
 
-float normalise_angle(float angle)
-	{
-	    float newAngle = angle;
-	    while (newAngle <= -PI) newAngle += TWO_PI;
-	    while (newAngle > PI) newAngle -= TWO_PI;
-	    return newAngle;
-	}
+float normalise_angle(float angle);
+
+int sign(float x);
 
 #endif

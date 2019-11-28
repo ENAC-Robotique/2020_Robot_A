@@ -1,4 +1,3 @@
-
 #ifndef NAVIGATOR_H_
 #define NAVIGATOR_H_
 
@@ -14,18 +13,23 @@ typedef enum {INITIAL_TURN,
 			  CRUISE,
 			  STOPPED}Move_state;
 
+typedef enum {INIT,	
+              ON_GOING,
+			  }Stage;
+
 class Navigator{
 public:
 	Navigator();
 	void move_to(float x, float y, float theta, Move_dir dir);
 	void update();
-
+	float compute_cons_omega(float theta);
+	float compute_cons_speed(float x, float y);
+	
     /*------------------*/
 
 	void turn_to(float theta);
 	void throw_to(float x, float y, float theta);
-	float compute_cons_speed();
-	float compute_cons_omega();
+	
 	void forceStop();
 	bool isTrajectoryFinished();
 	bool moveForward();
@@ -35,16 +39,18 @@ private:
 	float x_target;
 	float y_target;
 	float theta_target;
+	float theta_initial;
     Move_dir move_dir;
-    
+	Stage stage;
+    Move_state move_state;
+	Move_type move_type;
+
     /*--------------*/
     
     bool turn_done;
 	bool displacement_done;
 	bool trajectory_done;
 	
-	Move_type move_type;
-	Move_state move_state;
 
 	float center_axes(float angle);
 	float center_radian(float angle);

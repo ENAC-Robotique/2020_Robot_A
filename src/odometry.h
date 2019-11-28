@@ -16,5 +16,7 @@ namespace Odometry {
 	float normalizeAngle(float angle);
 	float get_speed();
 	float get_omega();
+	void incrementator_R();
+	void incrementator_L();
 }
 #endif

@@ -1,7 +1,7 @@
-#include "odometry.h"
+#include "motorControl.h"
 #include "Arduino.h"
 #include "params.h"
-#include "motorControl.h"
+#include "odometry.h"
 
 int clamp(int inf, int sup, float x) {
 	return min(sup, max(inf, x));
@@ -55,7 +55,7 @@ namespace MotorControl {
 
 	}
 
-	void update() {
+	void update(){
 
 		float error_speed = cons_speed - Odometry::get_speed();
 		error_integrale_speed += error_speed;
