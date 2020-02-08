@@ -11,3 +11,7 @@ float normalise_angle(float angle){
 int sign(float x){
 	return (int) (x/abs(x));
 }
+
+float scalaire(float x1, float y1, float x2, float y2){
+	return x1*x2 + y1*y2;
+}

@@ -54,7 +54,7 @@ private:
 
 	float center_axes(float angle);
 	float center_radian(float angle);
-	int scalaire(float x,float y,float x2,float y2);
+	//int scalaire(float x,float y,float x2,float y2);
 };
 
 extern Navigator navigator;

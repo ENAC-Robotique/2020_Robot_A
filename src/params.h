@@ -6,10 +6,10 @@
 
 const unsigned long TIME_RACE = 100000;
 
-const int ENCODER_R_A = 21;
-const int ENCODER_R_B = 20;
-const int ENCODER_L_A = 17;
-const int ENCODER_L_B = 16;
+const int ENCODER_R_A = 2;
+const int ENCODER_R_B = 3;
+const int ENCODER_L_A = 31;
+const int ENCODER_L_B = 30;
 
 
 const int MOT_R_PWM = 5;

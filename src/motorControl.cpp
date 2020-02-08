@@ -30,6 +30,17 @@ namespace MotorControl {
 	float prev_speed_error;
 	float prev_omega_error;
 
+	void init() {
+		pinMode(MOT_R_DIR, OUTPUT);
+		pinMode(MOT_R_PWM, OUTPUT);
+		pinMode(MOT_L_DIR, OUTPUT);
+		pinMode(MOT_L_PWM, OUTPUT);
+		cons_omega = cons_speed = 0;
+		error_integrale_omega = error_integrale_speed = 0;
+		prev_omega_error = prev_speed_error = 0;
+	}
+
+
 	void set_cons(float speed, float omega) {
 		cons_speed = speed;
 		cons_omega = omega;
@@ -43,20 +54,8 @@ namespace MotorControl {
 		return cons_omega;
 	}
 
-	void init() {
-		pinMode(MOT_R_DIR, OUTPUT);
-		pinMode(MOT_R_PWM, OUTPUT);
-		pinMode(MOT_L_DIR, OUTPUT);
-		pinMode(MOT_L_PWM, OUTPUT);
-		cons_omega = cons_speed = 0;
-		error_integrale_omega = error_integrale_speed = 0;
-		prev_omega_error = prev_speed_error = 0;
-
-
-	}
-
 	void update(){
-
+		int maxi = 50;
 		float error_speed = cons_speed - Odometry::get_speed();
 		error_integrale_speed += error_speed;
 		delta_speed = error_speed - prev_speed_error;
@@ -69,9 +68,13 @@ namespace MotorControl {
 		prev_omega_error = error_omega;
 		float cmd_omega = Kp_omega * error_omega + Ki_omega * error_integrale_omega + Kd_omega * delta_omega;
 
-		int cmd_mot_R = clamp(-255, 255, cmd_speed - cmd_omega); //à revoir
-		int cmd_mot_L = -clamp(-255, 255, cmd_speed + cmd_omega);
+		int cmd_mot_R = clamp(-maxi, maxi, cmd_speed - cmd_omega); //à revoir
+		int cmd_mot_L = -clamp(-maxi, maxi, cmd_speed + cmd_omega);
 
+		/*Serial.println("update cmd : ");
+		Serial.println(cmd_mot_L);
+		Serial.println(cmd_mot_R);*/
+		
 		analogWrite(MOT_R_PWM, abs(cmd_mot_R));
 		digitalWrite(MOT_R_DIR, direction_sign(cmd_mot_R));
 		analogWrite(MOT_L_PWM, abs(cmd_mot_L));

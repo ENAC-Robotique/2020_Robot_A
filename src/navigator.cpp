@@ -36,13 +36,14 @@ void Navigator::turn_to(float theta){
 float Navigator::compute_cons_omega(float theta){
   float omega_cons;
   float t_rotation_stop = abs(Odometry::get_omega())/ACCEL_OMEGA_MAX;
-	float angle_fore = Odometry::get_pos_theta() + abs(Odometry::get_omega())*t_rotation_stop -1/2*ACCEL_OMEGA_MAX*pow(t_rotation_stop,2);
-	int sgn = sign(theta - Odometry::get_pos_theta());
+  float angle_fore = Odometry::get_pos_theta() + abs(Odometry::get_omega())*t_rotation_stop -1/2*ACCEL_OMEGA_MAX*pow(t_rotation_stop,2);
+  Serial.print("angle_fore : ");
+  Serial.println(angle_fore);
+  int sgn = sign(theta - Odometry::get_pos_theta());
   if(abs(angle_fore - theta) < ADMITTED_ANGLE_ERROR){
 		omega_cons = sgn * max(0, abs(Odometry::get_omega()) - NAVIGATOR_TIME_PERIOD*ACCEL_OMEGA_MAX);
 	}
 	else{
-    
 		if((theta - angle_fore) > 0){
 			omega_cons = sgn * min(OMEGA_MAX, abs(Odometry::get_omega()) + NAVIGATOR_TIME_PERIOD*ACCEL_OMEGA_MAX);
 		}
@@ -134,6 +135,8 @@ void Navigator::update(){
 					case ON_GOING:
 						if ((theta_target - Odometry::get_pos_theta()) > ADMITTED_ANGLE_ERROR){
 							compute_cons_omega(theta_target);
+							Serial.print("THETA TARGET : ");
+							Serial.println(theta_target);
 						}
 						else{
 							stage = INIT;
@@ -157,10 +160,9 @@ void Navigator::update(){
 				speed_cons = 0;
 			}
 			MotorControl::set_cons(speed_cons,0);
-			MotorControl::set_cons(speed_cons,0);
+			//MotorControl::set_cons(omega_cons,0);
             break;
         }
-		
-
 
 }
+
